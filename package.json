@@ -1,7 +1,7 @@
 {
   "name": "@sesamecare-oss/us-postal-codes",
   "version": "0.0.0",
-  "description": "",
+  "description": "Lookup city, state and geolocation by US postal codes. Includes infra for fetching the latest values.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "author": "Developers <developers@sesamecare.com>",

@@ -11,7 +11,7 @@
     "build": "tsc -p tsconfig.build.json",
     "clean": "yarn dlx rimraf ./dist",
     "lint": "eslint .",
-    "postinstall": "coconfig",
+    "postinstall": "cpconfig",
     "test": "vitest"
   },
   "keywords": [
@@ -43,25 +43,26 @@
     ]
   },
   "config": {
-    "coconfig": "@openapi-typescript-infra/coconfig"
+    "cpconfig": "@openapi-typescript-infra/cpconfig"
   },
   "devDependencies": {
-    "@openapi-typescript-infra/coconfig": "^4.2.2",
-    "@semantic-release/exec": "^6.0.3",
-    "@semantic-release/github": "^9.2.3",
-    "@types/node": "^20.9.0",
-    "@typescript-eslint/eslint-plugin": "^6.11.0",
-    "@typescript-eslint/parser": "^6.11.0",
-    "coconfig": "^1.0.0",
-    "eslint": "^8.53.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-import-resolver-typescript": "^3.6.1",
-    "eslint-plugin-import": "^2.29.0",
-    "typescript": "^5.2.2",
-    "vitest": "^0.34.6"
+    "@openapi-typescript-infra/cpconfig": "^1.1.0",
+    "@semantic-release/exec": "^7.1.0",
+    "@semantic-release/github": "^12.0.6",
+    "@types/node": "^25.5.2",
+    "@typescript-eslint/eslint-plugin": "^8.58.1",
+    "@typescript-eslint/parser": "^8.58.1",
+    "cpconfig": "^1.5.0",
+    "eslint": "^9.39.4",
+    "eslint-config-prettier": "^9.1.2",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
+    "prettier": "^3.8.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.4"
   },
   "dependencies": {
     "sqlite": "^5.1.1",
-    "sqlite3": "^5.1.6"
+    "sqlite3": "^6.0.1"
   }
 }

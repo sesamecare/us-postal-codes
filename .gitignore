@@ -3,6 +3,7 @@ src/generated
 .transpiled
 .nyc_output
 .eslintcache
+.claude
 
 # TypeScript incremental compilation cache
 *.tsbuildinfo
@@ -56,12 +57,11 @@ Thumbs.db
 
 # TypeScript incremental compilation cache
 *.tsbuildinfo
-# Added by coconfig
-.eslintignore
-.npmignore
-tsconfig.json
-tsconfig.build.json
-.prettierrc.js
-.eslintrc.js
-.commitlintrc.json
-vitest.config.ts
+
+# Managed by cpconfig
+/.commitlintrc.yaml
+/eslint.config.mts
+/tsconfig.json
+/tsconfig.build.json
+/.prettierrc.yaml
+/vitest.config.ts

@@ -10,32 +10,28 @@ on:
 permissions:
   contents: read
 
-jobs:
-  prepare:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Cleanup stale actions
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          access_token: ${{ github.token }}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js 18
-      uses: actions/setup-node@v3
-      with:
-        node-version: 20
-        cache: yarn
-    - name: npm install, lint, build, and test
-      run: |
-        yarn install --immutable
-        yarn lint
-        yarn build
-        yarn test
-      env:
-        CI: true
+      - uses: actions/checkout@v6
+      - name: Use Node.js 22
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: yarn
+      - name: npm install, lint, build, and test
+        run: |
+          yarn install --immutable
+          yarn lint
+          yarn build
+          yarn test
+        env:
+          CI: true
 
   publish-npm:
     needs: build
@@ -47,16 +43,15 @@ jobs:
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 22
           cache: yarn
       - run: yarn install --immutable
       - run: yarn build
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.SESAMECARE_OSS_NPM_TOKEN }}
-        run: |
-          yarn dlx semantic-release
+          NPM_CONFIG_PROVENANCE: 'true'
+        run: npx semantic-release

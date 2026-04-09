@@ -8,6 +8,8 @@ Lookup city, state, and geolocation by US postal code, or find nearby zip codes 
 npm install @sesamecare-oss/us-postal-codes
 ```
 
+Requires Node.js 22.5.0 or newer because the module uses the built-in `node:sqlite` API.
+
 ## Usage
 
 ```typescript

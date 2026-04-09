@@ -1,8 +1,5 @@
 import path from 'path';
-
-import { Database as DatabaseDriver } from 'sqlite3';
-import type { Database } from 'sqlite';
-import { open } from 'sqlite';
+import { DatabaseSync } from 'node:sqlite';
 
 export interface PostalCodeLocation {
   postalCode: string;
@@ -29,13 +26,10 @@ function haversineDistance(lat1: number, lng1: number, lat2: number, lng2: numbe
 }
 
 export class USPostalCodes {
-  db: Database | undefined;
+  db: DatabaseSync | undefined;
 
   async open() {
-    this.db = await open({
-      filename: path.join(__dirname, '../assets/uspostalcodes.db'),
-      driver: DatabaseDriver,
-    });
+    this.db = new DatabaseSync(path.join(__dirname, '../assets/uspostalcodes.db'));
   }
 
   async lookup(zipCode: string): Promise<
@@ -49,10 +43,14 @@ export class USPostalCodes {
     if (!this.db) {
       throw new Error('Postal code database unavailable');
     }
-    return this.db.all(
-      'SELECT city, state, lat, lng FROM locations WHERE postal_code = ?',
-      zipCode,
-    );
+    return this.db
+      .prepare('SELECT city, state, lat, lng FROM locations WHERE postal_code = ?')
+      .all(zipCode) as {
+      city: string;
+      state: string;
+      lat: number;
+      lng: number;
+    }[];
   }
 
   async nearby(lat: number, lng: number, limit = 10): Promise<NearbyResult[]> {
@@ -62,17 +60,19 @@ export class USPostalCodes {
 
     // Use approximate Euclidean ordering in SQL (fast for 41K rows),
     // then compute exact Haversine distances in JS
-    const rows: { postal_code: string; city: string; state: string; lat: number; lng: number }[] =
-      await this.db.all(
+    const rows = this.db
+      .prepare(
         `SELECT postal_code, city, state, lat, lng FROM locations
          ORDER BY (lat - ?) * (lat - ?) + (lng - ?) * (lng - ?)
          LIMIT ?`,
-        lat,
-        lat,
-        lng,
-        lng,
-        limit,
-      );
+      )
+      .all(lat, lat, lng, lng, limit) as {
+      postal_code: string;
+      city: string;
+      state: string;
+      lat: number;
+      lng: number;
+    }[];
 
     return rows
       .map((row) => ({

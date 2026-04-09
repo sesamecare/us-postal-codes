@@ -25,6 +25,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "engines": {
+    "node": ">=22.5.0"
+  },
   "release": {
     "branches": [
       "main"
@@ -60,9 +63,5 @@
     "prettier": "^3.8.1",
     "typescript": "^5.9.3",
     "vitest": "^4.1.4"
-  },
-  "dependencies": {
-    "sqlite": "^5.1.1",
-    "sqlite3": "^6.0.1"
   }
 }

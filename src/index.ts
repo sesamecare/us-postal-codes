@@ -1,5 +1,6 @@
-import path from 'path';
 import { DatabaseSync } from 'node:sqlite';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 export interface PostalCodeLocation {
   postalCode: string;
@@ -14,6 +15,7 @@ export interface NearbyResult extends PostalCodeLocation {
 }
 
 const EARTH_RADIUS_MILES = 3958.8;
+const CURRENT_DIRECTORY = dirname(fileURLToPath(import.meta.url));
 
 function haversineDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
   const toRad = (deg: number) => (deg * Math.PI) / 180;
@@ -29,7 +31,7 @@ export class USPostalCodes {
   db: DatabaseSync | undefined;
 
   async open() {
-    this.db = new DatabaseSync(path.join(__dirname, '../assets/uspostalcodes.db'));
+    this.db = new DatabaseSync(join(CURRENT_DIRECTORY, '../assets/uspostalcodes.db'));
   }
 
   async lookup(zipCode: string): Promise<
